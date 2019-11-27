@@ -27,7 +27,7 @@ CREATE SCHEMA Mustafina
 GO
 
 /*
-Создание таблиц и определение первичных ключей
+РЎРѕР·РґР°РЅРёРµ С‚Р°Р±Р»РёС† Рё РѕРїСЂРµРґРµР»РµРЅРёРµ РїРµСЂРІРёС‡РЅС‹С… РєР»СЋС‡РµР№
 */
 
 IF OBJECT_ID(N'wallet', 'U') IS NOT NULL
@@ -224,14 +224,14 @@ INSERT INTO [KB301_Mustafina].Mustafina.exchange_rates
  ,(10, 9, 0.7682)
  ,(10, 10, 1)
 GO
---Ошибка: такой уникальный ключ уже существует в таблице
+--РћС€РёР±РєР°: С‚Р°РєРѕР№ СѓРЅРёРєР°Р»СЊРЅС‹Р№ РєР»СЋС‡ СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚ РІ С‚Р°Р±Р»РёС†Рµ
 /*
 INSERT INTO [KB301_Mustafina].Mustafina.exchange_rates VALUES (1, 1, 2) 
 GO
 */
 
 
---Процедура добавления денег в кошелёк к такой же валюте
+--РџСЂРѕС†РµРґСѓСЂР° РґРѕР±Р°РІР»РµРЅРёСЏ РґРµРЅРµРі РІ РєРѕС€РµР»С‘Рє Рє С‚Р°РєРѕР№ Р¶Рµ РІР°Р»СЋС‚Рµ
 CREATE PROCEDURE add_money
 		@wallet tinyint,
 		@currency tinyint,
@@ -247,12 +247,12 @@ BEGIN
 	UPDATE [KB301_Mustafina].Mustafina.content 
 	SET Quantity = Quantity + @quantity WHERE ID_wallet = @wallet AND ID_currency = @currency
 	SELECT * from dbo.wallet_view as W 
-	ORDER BY Кошелёк, Валюта
+	ORDER BY РљРѕС€РµР»С‘Рє, Р’Р°Р»СЋС‚Р°
 END
 GO
 
 
---Процедура выемки валюты из кошелька (точно такой же)
+--РџСЂРѕС†РµРґСѓСЂР° РІС‹РµРјРєРё РІР°Р»СЋС‚С‹ РёР· РєРѕС€РµР»СЊРєР° (С‚РѕС‡РЅРѕ С‚Р°РєРѕР№ Р¶Рµ)
 CREATE PROCEDURE take_money
 		@wallet tinyint,
 		@currency tinyint,
@@ -264,12 +264,12 @@ BEGIN
 
 	IF NOT EXISTS (SELECT * FROM [KB301_Mustafina].Mustafina.content WHERE ID_wallet = @wallet)
 	BEGIN
-		RAISERROR('Нет такого кошелька!', 5, 1)
+		RAISERROR('РќРµС‚ С‚Р°РєРѕРіРѕ РєРѕС€РµР»СЊРєР°!', 5, 1)
 		RETURN
 	END
 	IF NOT EXISTS (SELECT * FROM [KB301_Mustafina].Mustafina.content WHERE ID_currency = @currency)
 	BEGIN
-		RAISERROR('Нет такой валюты в кошельке!', 5, 1)
+		RAISERROR('РќРµС‚ С‚Р°РєРѕР№ РІР°Р»СЋС‚С‹ РІ РєРѕС€РµР»СЊРєРµ!', 5, 1)
 		RETURN
 	END
 	SET @quantity_in_wallet = (SELECT Quantity FROM [KB301_Mustafina].Mustafina.content WHERE ID_wallet = @wallet AND ID_currency = @currency)
@@ -280,16 +280,16 @@ BEGIN
 	END
 	ELSE
 	BEGIN
-		RAISERROR('В кошельке недостаточно средств для выемки!', 5, 1)
+		RAISERROR('Р’ РєРѕС€РµР»СЊРєРµ РЅРµРґРѕСЃС‚Р°С‚РѕС‡РЅРѕ СЃСЂРµРґСЃС‚РІ РґР»СЏ РІС‹РµРјРєРё!', 5, 1)
 		RETURN
 	END
 	SELECT * from dbo.wallet_view as W 
-	ORDER BY Кошелёк, Валюта
+	ORDER BY РљРѕС€РµР»С‘Рє, Р’Р°Р»СЋС‚Р°
 END
 GO
 
 
---Процедура выемки денег в кошельке валют всех видов. На вход подается валюта и количество, от всех валют в кошельке отнимается переданная валюта с учётом курса
+--РџСЂРѕС†РµРґСѓСЂР° РІС‹РµРјРєРё РґРµРЅРµРі РІ РєРѕС€РµР»СЊРєРµ РІР°Р»СЋС‚ РІСЃРµС… РІРёРґРѕРІ. РќР° РІС…РѕРґ РїРѕРґР°РµС‚СЃСЏ РІР°Р»СЋС‚Р° Рё РєРѕР»РёС‡РµСЃС‚РІРѕ, РѕС‚ РІСЃРµС… РІР°Р»СЋС‚ РІ РєРѕС€РµР»СЊРєРµ РѕС‚РЅРёРјР°РµС‚СЃСЏ РїРµСЂРµРґР°РЅРЅР°СЏ РІР°Р»СЋС‚Р° СЃ СѓС‡С‘С‚РѕРј РєСѓСЂСЃР°
 CREATE PROCEDURE take_money_in_each_currency
 		@wallet tinyint,
 		@currency tinyint,
@@ -302,7 +302,7 @@ DECLARE @cursor CURSOR
 	SET @multiplicity = 100
 	IF NOT EXISTS (SELECT * FROM [KB301_Mustafina].Mustafina.content WHERE ID_wallet = @wallet)
 	BEGIN
-		RAISERROR('Нет такого кошелька!', 5, 1)
+		RAISERROR('РќРµС‚ С‚Р°РєРѕРіРѕ РєРѕС€РµР»СЊРєР°!', 5, 1)
 		RETURN
 	END
 	SET @cursor =  CURSOR SCROLL FOR SELECT ID_currency, Quantity FROM [KB301_Mustafina].Mustafina.content WHERE ID_wallet=@wallet
@@ -324,7 +324,7 @@ DECLARE @cursor CURSOR
 		END
 		ELSE
 		BEGIN
-			RAISERROR('В кошельке недостаточно средств для выемки!', 5, 1)
+			RAISERROR('Р’ РєРѕС€РµР»СЊРєРµ РЅРµРґРѕСЃС‚Р°С‚РѕС‡РЅРѕ СЃСЂРµРґСЃС‚РІ РґР»СЏ РІС‹РµРјРєРё!', 5, 1)
 			RETURN
 		END
 		FETCH NEXT FROM @cursor INTO @current_currency, @current_quantity
@@ -332,13 +332,13 @@ DECLARE @cursor CURSOR
 	CLOSE @cursor
 	DEALLOCATE @cursor
 	SELECT * from dbo.wallet_view as W 
-	WHERE Кошелёк = @wallet
-	ORDER BY Валюта
+	WHERE РљРѕС€РµР»С‘Рє = @wallet
+	ORDER BY Р’Р°Р»СЋС‚Р°
 	RETURN
 END
 GO
 
---Показать таблицу с валютами
+--РџРѕРєР°Р·Р°С‚СЊ С‚Р°Р±Р»РёС†Сѓ СЃ РІР°Р»СЋС‚Р°РјРё
 CREATE PROCEDURE show_table
 AS
 BEGIN
@@ -349,14 +349,14 @@ DECLARE @one_cursor CURSOR
 DECLARE @two_cursor CURSOR
 DECLARE @sql nvarchar(400)
 	SET NOCOUNT ON
-	CREATE TABLE #result_table(Валюта nvarchar(20) PRIMARY KEY)
+	CREATE TABLE #result_table(Р’Р°Р»СЋС‚Р° nvarchar(20) PRIMARY KEY)
 	SET @one_cursor = CURSOR SCROLL FOR SELECT Currency FROM [KB301_Mustafina].Mustafina.currency ORDER BY Currency
 	OPEN @one_cursor
 	FETCH NEXT FROM @one_cursor INTO @one_currency
 	WHILE @@FETCH_STATUS = 0
 	BEGIN
 		EXEC ('ALTER TABLE #result_table ADD ['+@one_currency+'] float NULL')
-		INSERT INTO #result_table(Валюта) VALUES(@one_currency)
+		INSERT INTO #result_table(Р’Р°Р»СЋС‚Р°) VALUES(@one_currency)
 		FETCH NEXT FROM @one_cursor INTO @one_currency
 	END
 	CLOSE @one_cursor
@@ -373,7 +373,7 @@ DECLARE @sql nvarchar(400)
 			[KB301_Mustafina].Mustafina.currency AS ONE ON Sale = ONE.ID_currency LEFT JOIN
 			[KB301_Mustafina].Mustafina.currency AS TWO ON Purchase = TWO.ID_currency
 									 WHERE ONE.Currency=@one_currency AND TWO.Currency=@two_currency)
-			SET @sql = ('UPDATE #result_table SET '+@two_currency+'='+CAST(CAST(@course AS float) AS varchar(10))+' WHERE Валюта='''+@one_currency+'''')
+			SET @sql = ('UPDATE #result_table SET '+@two_currency+'='+CAST(CAST(@course AS float) AS varchar(10))+' WHERE Р’Р°Р»СЋС‚Р°='''+@one_currency+'''')
 			EXEC (@sql)
 			FETCH NEXT FROM @two_cursor INTO @two_currency
 		END
@@ -389,7 +389,7 @@ END
 GO
 
 
---Получить сумму всех денег в одной валюте в кошельке
+--РџРѕР»СѓС‡РёС‚СЊ СЃСѓРјРјСѓ РІСЃРµС… РґРµРЅРµРі РІ РѕРґРЅРѕР№ РІР°Р»СЋС‚Рµ РІ РєРѕС€РµР»СЊРєРµ
 CREATE FUNCTION get_money_in_wallet(@wallet tinyint, @currency tinyint)
 RETURNS float
 AS
@@ -424,23 +424,23 @@ END
 GO
 
 
---Представление. Сколько и какой валюты находится в кошельках
+--РџСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ. РЎРєРѕР»СЊРєРѕ Рё РєР°РєРѕР№ РІР°Р»СЋС‚С‹ РЅР°С…РѕРґРёС‚СЃСЏ РІ РєРѕС€РµР»СЊРєР°С…
 CREATE VIEW wallet_view AS
-SELECT ID_wallet as 'Кошелёк', CUR.Currency as 'Валюта', Quantity as 'Количество' FROM [KB301_Mustafina].Mustafina.content AS CONT 
+SELECT ID_wallet as 'РљРѕС€РµР»С‘Рє', CUR.Currency as 'Р’Р°Р»СЋС‚Р°', Quantity as 'РљРѕР»РёС‡РµСЃС‚РІРѕ' FROM [KB301_Mustafina].Mustafina.content AS CONT 
 LEFT JOIN [KB301_Mustafina].Mustafina.currency as CUR
 ON CONT.ID_currency = CUR.ID_currency
 GO
 
 SELECT * FROM dbo.wallet_view
-WHERE Кошелёк=1
+WHERE РљРѕС€РµР»С‘Рє=1
 
---Добавление валюты в кошелек
+--Р”РѕР±Р°РІР»РµРЅРёРµ РІР°Р»СЋС‚С‹ РІ РєРѕС€РµР»РµРє
 EXEC add_money 1, 1, 10
 EXEC add_money 2, 1, 85
 EXEC add_money 1, 5, 76.8
 
 
---Выемка валюты из кошелька
+--Р’С‹РµРјРєР° РІР°Р»СЋС‚С‹ РёР· РєРѕС€РµР»СЊРєР°
 EXEC take_money 1, 1, 200
 EXEC take_money 4, 9, 2
 EXEC take_money 3, 8, 70
@@ -450,12 +450,12 @@ EXEC take_money_in_each_currency 1, 1, 1
 EXEC take_money_in_each_currency 2, 1, 2
 
 
---Определение суммы всех денег в кошельке, выраженной в определенной валюте
-SELECT DISTINCT ID_wallet as 'Кошелёк', CUR.Currency as 'Валюта', dbo.get_money_in_wallet(ID_wallet, CUR.ID_currency) as 'Сумма' FROM
+--РћРїСЂРµРґРµР»РµРЅРёРµ СЃСѓРјРјС‹ РІСЃРµС… РґРµРЅРµРі РІ РєРѕС€РµР»СЊРєРµ, РІС‹СЂР°Р¶РµРЅРЅРѕР№ РІ РѕРїСЂРµРґРµР»РµРЅРЅРѕР№ РІР°Р»СЋС‚Рµ
+SELECT DISTINCT ID_wallet as 'РљРѕС€РµР»С‘Рє', CUR.Currency as 'Р’Р°Р»СЋС‚Р°', dbo.get_money_in_wallet(ID_wallet, CUR.ID_currency) as 'РЎСѓРјРјР°' FROM
 [KB301_Mustafina].Mustafina.content AS CONT 
 LEFT JOIN [KB301_Mustafina].Mustafina.currency as CUR
 ON CONT.ID_currency = CUR.ID_currency
 WHERE ID_wallet = 1 AND CUR.ID_currency = 2
 
---Таблица валют
+--РўР°Р±Р»РёС†Р° РІР°Р»СЋС‚
 EXEC show_table

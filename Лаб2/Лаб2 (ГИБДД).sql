@@ -27,7 +27,7 @@ CREATE SCHEMA Mustafina
 GO
 
 /*
-Создание таблиц и определение первичных ключей
+РЎРѕР·РґР°РЅРёРµ С‚Р°Р±Р»РёС† Рё РѕРїСЂРµРґРµР»РµРЅРёРµ РїРµСЂРІРёС‡РЅС‹С… РєР»СЋС‡РµР№
 */
 
 IF OBJECT_ID(N'cars', 'U') IS NOT NULL
@@ -45,14 +45,14 @@ CREATE TABLE [KB301_Mustafina].Mustafina.cars
 	Driver_name nvarchar(50) NOT NULL,
     CONSTRAINT PK_ID_car PRIMARY KEY (ID_car),
 	CONSTRAINT check_Region_code CHECK (0<Region_code AND Region_code<200 OR 699<Region_code AND Region_code<800),
-	CONSTRAINT check_State_number CHECK (State_number NOT LIKE N'[АВЕКМНОРСТУХавекмнорстух]000[АВЕКМНОРСТУХавекмнорстух][АВЕКМНОРСТУХавекмнорстух]' 
-	AND State_number LIKE N'[АВЕКМНОРСТУХавекмнорстух][0123456789][0123456789][0123456789][АВЕКМНОРСТУХавекмнорстух][АВЕКМНОРСТУХавекмнорстух]')
+	CONSTRAINT check_State_number CHECK (State_number NOT LIKE N'[РђР’Р•РљРњРќРћР РЎРўРЈРҐР°РІРµРєРјРЅРѕСЂСЃС‚СѓС…]000[РђР’Р•РљРњРќРћР РЎРўРЈРҐР°РІРµРєРјРЅРѕСЂСЃС‚СѓС…][РђР’Р•РљРњРќРћР РЎРўРЈРҐР°РІРµРєРјРЅРѕСЂСЃС‚СѓС…]' 
+	AND State_number LIKE N'[РђР’Р•РљРњРќРћР РЎРўРЈРҐР°РІРµРєРјРЅРѕСЂСЃС‚СѓС…][0123456789][0123456789][0123456789][РђР’Р•РљРњРќРћР РЎРўРЈРҐР°РІРµРєРјРЅРѕСЂСЃС‚СѓС…][РђР’Р•РљРњРќРћР РЎРўРЈРҐР°РІРµРєРјРЅРѕСЂСЃС‚СѓС…]')
 
 )
 GO
 
 /*
---Создание триггера для валидности гос.номеров
+--РЎРѕР·РґР°РЅРёРµ С‚СЂРёРіРіРµСЂР° РґР»СЏ РІР°Р»РёРґРЅРѕСЃС‚Рё РіРѕСЃ.РЅРѕРјРµСЂРѕРІ
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE Name = 'trigger_check_state_number' AND type = 'TR') 
 	DROP TRIGGER Mustafina.trigger_check_state_number
@@ -65,11 +65,11 @@ AS
 DECLARE @is_wrong int
 BEGIN
 	SET @is_wrong = (SELECT COUNT(1) FROM inserted
-					  WHERE  State_number LIKE N'[АВЕКМНОРСТУХавекмнорстух]000[АВЕКМНОРСТУХавекмнорстух][АВЕКМНОРСТУХавекмнорстух]' OR
-					  State_number NOT LIKE N'[АВЕКМНОРСТУХавекмнорстух][0123456789][0123456789][0123456789][АВЕКМНОРСТУХавекмнорстух][АВЕКМНОРСТУХавекмнорстух]')
+					  WHERE  State_number LIKE N'[РђР’Р•РљРњРќРћР РЎРўРЈРҐР°РІРµРєРјРЅРѕСЂСЃС‚СѓС…]000[РђР’Р•РљРњРќРћР РЎРўРЈРҐР°РІРµРєРјРЅРѕСЂСЃС‚СѓС…][РђР’Р•РљРњРќРћР РЎРўРЈРҐР°РІРµРєРјРЅРѕСЂСЃС‚СѓС…]' OR
+					  State_number NOT LIKE N'[РђР’Р•РљРњРќРћР РЎРўРЈРҐР°РІРµРєРјРЅРѕСЂСЃС‚СѓС…][0123456789][0123456789][0123456789][РђР’Р•РљРњРќРћР РЎРўРЈРҐР°РІРµРєРјРЅРѕСЂСЃС‚СѓС…][РђР’Р•РљРњРќРћР РЎРўРЈРҐР°РІРµРєРјРЅРѕСЂСЃС‚СѓС…]')
 	if (@is_wrong != 0) 
 	BEGIN
-		RAISERROR(N'Неверный формат регистрационного номерного знака!', 5, 1)
+		RAISERROR(N'РќРµРІРµСЂРЅС‹Р№ С„РѕСЂРјР°С‚ СЂРµРіРёСЃС‚СЂР°С†РёРѕРЅРЅРѕРіРѕ РЅРѕРјРµСЂРЅРѕРіРѕ Р·РЅР°РєР°!', 5, 1)
 		ROLLBACK
 	END
 	ELSE
@@ -108,7 +108,7 @@ CREATE TABLE [KB301_Mustafina].Mustafina.passages
 GO
 
 
---Создание триггера для въезда-выезда
+--РЎРѕР·РґР°РЅРёРµ С‚СЂРёРіРіРµСЂР° РґР»СЏ РІСЉРµР·РґР°-РІС‹РµР·РґР°
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE Name = 'trigger_check_passage' AND type = 'TR') 
 	DROP TRIGGER Mustafina.trigger_check_passage
@@ -132,7 +132,7 @@ BEGIN
 	BEGIN
 	    SELECT @passage as 'passage', @insert as 'insert', @insert_time as 'ins_time', @passage_time as 'pass_time'
 		SELECT * from [KB301_Mustafina].Mustafina.passages
-		RAISERROR(N'Неправильное направление движение автомобиля!', 5, 1)
+		RAISERROR(N'РќРµРїСЂР°РІРёР»СЊРЅРѕРµ РЅР°РїСЂР°РІР»РµРЅРёРµ РґРІРёР¶РµРЅРёРµ Р°РІС‚РѕРјРѕР±РёР»СЏ!', 5, 1)
 		ROLLBACK
 	END
 END
@@ -165,7 +165,7 @@ CREATE TABLE [KB301_Mustafina].Mustafina.region_codes
 GO
 
 /*
---Создание триггера для таблицы с кодами регионов
+--РЎРѕР·РґР°РЅРёРµ С‚СЂРёРіРіРµСЂР° РґР»СЏ С‚Р°Р±Р»РёС†С‹ СЃ РєРѕРґР°РјРё СЂРµРіРёРѕРЅРѕРІ
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE Name = 'trigger_check_region_code' AND type = 'TR') 
 	DROP TRIGGER Mustafina.trigger_check_region_code
@@ -181,7 +181,7 @@ BEGIN
 					  WHERE NOT(0<Code AND Code<200 OR 699<Code AND Code<800))
 	if (@is_wrong != 0) 
 	BEGIN
-		RAISERROR(N'Неверный формат кода региона!', 5, 1)
+		RAISERROR(N'РќРµРІРµСЂРЅС‹Р№ С„РѕСЂРјР°С‚ РєРѕРґР° СЂРµРіРёРѕРЅР°!', 5, 1)
 		ROLLBACK
 	END
 	ELSE
@@ -193,7 +193,7 @@ GO
 */
 
 /*
-Создание внешних ключей
+РЎРѕР·РґР°РЅРёРµ РІРЅРµС€РЅРёС… РєР»СЋС‡РµР№
 */
 
 ALTER TABLE [KB301_Mustafina].Mustafina.cars ADD 
@@ -219,99 +219,99 @@ ALTER TABLE [KB301_Mustafina].Mustafina.region_codes ADD
 GO	
 
 /*
-Заполнение таблиц
+Р—Р°РїРѕР»РЅРµРЅРёРµ С‚Р°Р±Р»РёС†
 */
---INSERT INTO [KB301_Mustafina].Mustafina.regions VALUES (101, N'Россия')
+--INSERT INTO [KB301_Mustafina].Mustafina.regions VALUES (101, N'Р РѕСЃСЃРёСЏ')
 
 INSERT INTO [KB301_Mustafina].Mustafina.regions
  (ID_region, Name_of_region)
  VALUES 
-  (01, N'Республика Адыгея')
- ,(02, N'Республика Башкортостан')
- ,(03, N'Республика Бурятия')
- ,(04, N'Республика Алтай')
- ,(05, N'Республика Дагестан')
- ,(06, N'Республика Ингушетия')
- ,(07, N'Кабардино-Балкарская Республика')
- ,(08, N'Республика Калмыкия')
- ,(09, N'Республика Карачаево-Черкесия')
- ,(10, N'Республика Карелия')
- ,(11, N'Республика Коми')
- ,(12, N'Республика Марий Эл')
- ,(13, N'Республика Мордовия')
- ,(14, N'Республика Саха (Якутия)')
- ,(15, N'Республика Северная Осетия — Алания')
- ,(16, N'Республика Татарстан')
- ,(17, N'Республика Тыва')
- ,(18, N'Удмуртская Республика')
- ,(19, N'Республика Хакасия')
- ,(21, N'Чувашская Республика')
- ,(22, N'Алтайский край')
- ,(23, N'Краснодарский край')
- ,(24, N'Красноярский край')
- ,(25, N'Приморский край')
- ,(26, N'Ставропольский край')
- ,(27, N'Хабаровский край')
- ,(28, N'Амурская область')
- ,(29, N'Архангельская область')
- ,(30, N'Астраханская область')
- ,(31, N'Белгородская область')
- ,(32, N'Брянская область')
- ,(33, N'Владимирская область')
- ,(34, N'Волгоградская область')
- ,(35, N'Вологодская область')
- ,(36, N'Воронежская область')
- ,(37, N'Ивановская область')
- ,(38, N'Иркутская область')
- ,(39, N'Калининградская область')
- ,(40, N'Калужская область')
- ,(41, N'Камчатский край')
- ,(42, N'Кемеровская область')
- ,(43, N'Кировская область')
- ,(44, N'Костромская область')
- ,(45, N'Курганская область')
- ,(46, N'Курская область')
- ,(47, N'Ленинградская область')
- ,(48, N'Липецкая область')
- ,(49, N'Магаданская область')
- ,(50, N'Московская область')
- ,(51, N'Мурманская область')
- ,(52, N'Нижегородская область')
- ,(53, N'Новгородская область')
- ,(54, N'Новосибирская область')
- ,(55, N'Омская область')
- ,(56, N'Оренбургская область')
- ,(57, N'Орловская область')
- ,(58, N'Пензенская область')
- ,(59, N'Пермский край')
- ,(60, N'Псковская область')
- ,(61, N'Ростовская область')
- ,(62, N'Рязанская область')
- ,(63, N'Самарская область')
- ,(64, N'Саратовская область')
- ,(65, N'Сахалинская область')
- ,(66, N'Свердловская область')
- ,(67, N'Смоленская область')
- ,(68, N'Тамбовская область')
- ,(69, N'Тверская область')
- ,(70, N'Томская область')
- ,(71, N'Тульская область')
- ,(72, N'Тюменская область')
- ,(73, N'Ульяновская область')
- ,(74, N'Челябинская область')
- ,(75, N'Забайкальский край')
- ,(76, N'Ярославская область')
- ,(77, N'Москва')
- ,(78, N'Санкт-Петербург')
- ,(79, N'Еврейская автономная область')
- ,(82, N'Крым')
- ,(83, N'Ненецкий автономный округ')
- ,(86, N'Ханты-Мансийский автономный округ Югра')
- ,(87, N'Чукотский автономный округ')
- ,(89, N'Ямало-Ненецкий автономный округ')
- ,(92, N'Севастополь')
- ,(94, N'Байконур')
- ,(95, N'Чеченская республика')
+  (01, N'Р РµСЃРїСѓР±Р»РёРєР° РђРґС‹РіРµСЏ')
+ ,(02, N'Р РµСЃРїСѓР±Р»РёРєР° Р‘Р°С€РєРѕСЂС‚РѕСЃС‚Р°РЅ')
+ ,(03, N'Р РµСЃРїСѓР±Р»РёРєР° Р‘СѓСЂСЏС‚РёСЏ')
+ ,(04, N'Р РµСЃРїСѓР±Р»РёРєР° РђР»С‚Р°Р№')
+ ,(05, N'Р РµСЃРїСѓР±Р»РёРєР° Р”Р°РіРµСЃС‚Р°РЅ')
+ ,(06, N'Р РµСЃРїСѓР±Р»РёРєР° РРЅРіСѓС€РµС‚РёСЏ')
+ ,(07, N'РљР°Р±Р°СЂРґРёРЅРѕ-Р‘Р°Р»РєР°СЂСЃРєР°СЏ Р РµСЃРїСѓР±Р»РёРєР°')
+ ,(08, N'Р РµСЃРїСѓР±Р»РёРєР° РљР°Р»РјС‹РєРёСЏ')
+ ,(09, N'Р РµСЃРїСѓР±Р»РёРєР° РљР°СЂР°С‡Р°РµРІРѕ-Р§РµСЂРєРµСЃРёСЏ')
+ ,(10, N'Р РµСЃРїСѓР±Р»РёРєР° РљР°СЂРµР»РёСЏ')
+ ,(11, N'Р РµСЃРїСѓР±Р»РёРєР° РљРѕРјРё')
+ ,(12, N'Р РµСЃРїСѓР±Р»РёРєР° РњР°СЂРёР№ Р­Р»')
+ ,(13, N'Р РµСЃРїСѓР±Р»РёРєР° РњРѕСЂРґРѕРІРёСЏ')
+ ,(14, N'Р РµСЃРїСѓР±Р»РёРєР° РЎР°С…Р° (РЇРєСѓС‚РёСЏ)')
+ ,(15, N'Р РµСЃРїСѓР±Р»РёРєР° РЎРµРІРµСЂРЅР°СЏ РћСЃРµС‚РёСЏ вЂ” РђР»Р°РЅРёСЏ')
+ ,(16, N'Р РµСЃРїСѓР±Р»РёРєР° РўР°С‚Р°СЂСЃС‚Р°РЅ')
+ ,(17, N'Р РµСЃРїСѓР±Р»РёРєР° РўС‹РІР°')
+ ,(18, N'РЈРґРјСѓСЂС‚СЃРєР°СЏ Р РµСЃРїСѓР±Р»РёРєР°')
+ ,(19, N'Р РµСЃРїСѓР±Р»РёРєР° РҐР°РєР°СЃРёСЏ')
+ ,(21, N'Р§СѓРІР°С€СЃРєР°СЏ Р РµСЃРїСѓР±Р»РёРєР°')
+ ,(22, N'РђР»С‚Р°Р№СЃРєРёР№ РєСЂР°Р№')
+ ,(23, N'РљСЂР°СЃРЅРѕРґР°СЂСЃРєРёР№ РєСЂР°Р№')
+ ,(24, N'РљСЂР°СЃРЅРѕСЏСЂСЃРєРёР№ РєСЂР°Р№')
+ ,(25, N'РџСЂРёРјРѕСЂСЃРєРёР№ РєСЂР°Р№')
+ ,(26, N'РЎС‚Р°РІСЂРѕРїРѕР»СЊСЃРєРёР№ РєСЂР°Р№')
+ ,(27, N'РҐР°Р±Р°СЂРѕРІСЃРєРёР№ РєСЂР°Р№')
+ ,(28, N'РђРјСѓСЂСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(29, N'РђСЂС…Р°РЅРіРµР»СЊСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(30, N'РђСЃС‚СЂР°С…Р°РЅСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(31, N'Р‘РµР»РіРѕСЂРѕРґСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(32, N'Р‘СЂСЏРЅСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(33, N'Р’Р»Р°РґРёРјРёСЂСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(34, N'Р’РѕР»РіРѕРіСЂР°РґСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(35, N'Р’РѕР»РѕРіРѕРґСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(36, N'Р’РѕСЂРѕРЅРµР¶СЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(37, N'РРІР°РЅРѕРІСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(38, N'РСЂРєСѓС‚СЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(39, N'РљР°Р»РёРЅРёРЅРіСЂР°РґСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(40, N'РљР°Р»СѓР¶СЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(41, N'РљР°РјС‡Р°С‚СЃРєРёР№ РєСЂР°Р№')
+ ,(42, N'РљРµРјРµСЂРѕРІСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(43, N'РљРёСЂРѕРІСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(44, N'РљРѕСЃС‚СЂРѕРјСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(45, N'РљСѓСЂРіР°РЅСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(46, N'РљСѓСЂСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(47, N'Р›РµРЅРёРЅРіСЂР°РґСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(48, N'Р›РёРїРµС†РєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(49, N'РњР°РіР°РґР°РЅСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(50, N'РњРѕСЃРєРѕРІСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(51, N'РњСѓСЂРјР°РЅСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(52, N'РќРёР¶РµРіРѕСЂРѕРґСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(53, N'РќРѕРІРіРѕСЂРѕРґСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(54, N'РќРѕРІРѕСЃРёР±РёСЂСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(55, N'РћРјСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(56, N'РћСЂРµРЅР±СѓСЂРіСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(57, N'РћСЂР»РѕРІСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(58, N'РџРµРЅР·РµРЅСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(59, N'РџРµСЂРјСЃРєРёР№ РєСЂР°Р№')
+ ,(60, N'РџСЃРєРѕРІСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(61, N'Р РѕСЃС‚РѕРІСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(62, N'Р СЏР·Р°РЅСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(63, N'РЎР°РјР°СЂСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(64, N'РЎР°СЂР°С‚РѕРІСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(65, N'РЎР°С…Р°Р»РёРЅСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(66, N'РЎРІРµСЂРґР»РѕРІСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(67, N'РЎРјРѕР»РµРЅСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(68, N'РўР°РјР±РѕРІСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(69, N'РўРІРµСЂСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(70, N'РўРѕРјСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(71, N'РўСѓР»СЊСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(72, N'РўСЋРјРµРЅСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(73, N'РЈР»СЊСЏРЅРѕРІСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(74, N'Р§РµР»СЏР±РёРЅСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(75, N'Р—Р°Р±Р°Р№РєР°Р»СЊСЃРєРёР№ РєСЂР°Р№')
+ ,(76, N'РЇСЂРѕСЃР»Р°РІСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(77, N'РњРѕСЃРєРІР°')
+ ,(78, N'РЎР°РЅРєС‚-РџРµС‚РµСЂР±СѓСЂРі')
+ ,(79, N'Р•РІСЂРµР№СЃРєР°СЏ Р°РІС‚РѕРЅРѕРјРЅР°СЏ РѕР±Р»Р°СЃС‚СЊ')
+ ,(82, N'РљСЂС‹Рј')
+ ,(83, N'РќРµРЅРµС†РєРёР№ Р°РІС‚РѕРЅРѕРјРЅС‹Р№ РѕРєСЂСѓРі')
+ ,(86, N'РҐР°РЅС‚С‹-РњР°РЅСЃРёР№СЃРєРёР№ Р°РІС‚РѕРЅРѕРјРЅС‹Р№ РѕРєСЂСѓРі Р®РіСЂР°')
+ ,(87, N'Р§СѓРєРѕС‚СЃРєРёР№ Р°РІС‚РѕРЅРѕРјРЅС‹Р№ РѕРєСЂСѓРі')
+ ,(89, N'РЇРјР°Р»Рѕ-РќРµРЅРµС†РєРёР№ Р°РІС‚РѕРЅРѕРјРЅС‹Р№ РѕРєСЂСѓРі')
+ ,(92, N'РЎРµРІР°СЃС‚РѕРїРѕР»СЊ')
+ ,(94, N'Р‘Р°Р№РєРѕРЅСѓСЂ')
+ ,(95, N'Р§РµС‡РµРЅСЃРєР°СЏ СЂРµСЃРїСѓР±Р»РёРєР°')
 GO
 
 --INSERT INTO [KB301_Mustafina].Mustafina.region_codes VALUES (400, 85)
@@ -454,77 +454,77 @@ GO
 
 INSERT INTO [KB301_Mustafina].Mustafina.cars
  (Make, Model, Color, Year_of_issue, State_number, Region_code, Driver_name) VALUES 
-  (N'Ferrari', N'Monza SP', 'Синий', 2012, N'В658НМ', 48, N'Корастылёв С.В.') 
+  (N'Ferrari', N'Monza SP', 'РЎРёРЅРёР№', 2012, N'Р’658РќРњ', 48, N'РљРѕСЂР°СЃС‚С‹Р»С‘РІ РЎ.Р’.') 
 INSERT INTO [KB301_Mustafina].Mustafina.cars VALUES 
- (N'Audi', N'Coupe', N'Черный', 2015,  N'С185ОН', 178, N'Чудов М.А.')
+ (N'Audi', N'Coupe', N'Р§РµСЂРЅС‹Р№', 2015,  N'РЎ185РћРќ', 178, N'Р§СѓРґРѕРІ Рњ.Рђ.')
 INSERT INTO [KB301_Mustafina].Mustafina.cars VALUES 
- (N'Lada', N'Granta', N'Красный', 2014,  N'Н001ЕР', 72, N'Гараничев Е.Т.')
+ (N'Lada', N'Granta', N'РљСЂР°СЃРЅС‹Р№', 2014,  N'Рќ001Р•Р ', 72, N'Р“Р°СЂР°РЅРёС‡РµРІ Р•.Рў.')
 INSERT INTO [KB301_Mustafina].Mustafina.cars VALUES 
- (N'Daewoo', N'Matiz', N'Голубой', 2013,  N'Х823ТА', 89, N'Юрлова Е.А.')
+ (N'Daewoo', N'Matiz', N'Р“РѕР»СѓР±РѕР№', 2013,  N'РҐ823РўРђ', 89, N'Р®СЂР»РѕРІР° Р•.Рђ.')
 INSERT INTO [KB301_Mustafina].Mustafina.cars VALUES 
- (N'KIA', N'Cerato', N'Золотой', 2011,  N'К579УМ', 74, N'Логинов А.С.')
+ (N'KIA', N'Cerato', N'Р—РѕР»РѕС‚РѕР№', 2011,  N'Рљ579РЈРњ', 74, N'Р›РѕРіРёРЅРѕРІ Рђ.РЎ.')
 INSERT INTO [KB301_Mustafina].Mustafina.cars VALUES 
- (N'Mazda', N'Bongo Brawny', N'Белый', 2018,  N'О369ЕВ', 96, N'Шипулин А.В.')
+ (N'Mazda', N'Bongo Brawny', N'Р‘РµР»С‹Р№', 2018,  N'Рћ369Р•Р’', 96, N'РЁРёРїСѓР»РёРЅ Рђ.Р’.')
 INSERT INTO [KB301_Mustafina].Mustafina.cars VALUES 
- (N'Lexus', N'RC', N'Черный', 2017,  N'К461АН', 174, N'Логинов А.С.')
+ (N'Lexus', N'RC', N'Р§РµСЂРЅС‹Р№', 2017,  N'Рљ461РђРќ', 174, N'Р›РѕРіРёРЅРѕРІ Рђ.РЎ.')
 INSERT INTO [KB301_Mustafina].Mustafina.cars VALUES 
- (N'Daewoo', N'Nexia', N'Серебристый', 2014,  N'М258ТА', 55, N'Пащенко Н.Т.')
+ (N'Daewoo', N'Nexia', N'РЎРµСЂРµР±СЂРёСЃС‚С‹Р№', 2014,  N'Рњ258РўРђ', 55, N'РџР°С‰РµРЅРєРѕ Рќ.Рў.')
 INSERT INTO [KB301_Mustafina].Mustafina.cars VALUES 
- (N'Nissan', N'Terrano', N'Красный', 2012,  N'А346ВС', 154, N'Губерниев Д.С.')
+ (N'Nissan', N'Terrano', N'РљСЂР°СЃРЅС‹Р№', 2012,  N'Рђ346Р’РЎ', 154, N'Р“СѓР±РµСЂРЅРёРµРІ Р”.РЎ.')
 INSERT INTO [KB301_Mustafina].Mustafina.cars VALUES 
- (N'Mazda', N'Bongo Brawny', N'Жёлтый', 2008,  N'Р421НТ', 138, N'Юрьева Е.В.')
+ (N'Mazda', N'Bongo Brawny', N'Р–С‘Р»С‚С‹Р№', 2008,  N'Р 421РќРў', 138, N'Р®СЂСЊРµРІР° Р•.Р’.')
 INSERT INTO [KB301_Mustafina].Mustafina.cars VALUES 
- (N'Renault', N'Logan', N'Сиреневый', 2008,  N'Е713ХУ', 47, N'Волков А.В.')
+ (N'Renault', N'Logan', N'РЎРёСЂРµРЅРµРІС‹Р№', 2008,  N'Р•713РҐРЈ', 47, N'Р’РѕР»РєРѕРІ Рђ.Р’.')
 INSERT INTO [KB301_Mustafina].Mustafina.cars VALUES 
- (N'Renault', N'Sandero', N'Белый', 2017,  N'К115АР', 88, N'Устюгов Е.А.')
+ (N'Renault', N'Sandero', N'Р‘РµР»С‹Р№', 2017,  N'Рљ115РђР ', 88, N'РЈСЃС‚СЋРіРѕРІ Р•.Рђ.')
 INSERT INTO [KB301_Mustafina].Mustafina.cars VALUES 
- (N'Subaru', N'Crosstrek', N'Синий', 2014,  N'У156СТ', 66, N'Жирный Е.В.')
+ (N'Subaru', N'Crosstrek', N'РЎРёРЅРёР№', 2014,  N'РЈ156РЎРў', 66, N'Р–РёСЂРЅС‹Р№ Р•.Р’.')
 INSERT INTO [KB301_Mustafina].Mustafina.cars VALUES 
- (N'Toyota', N'Highlander', N'Белый', 2016,  N'О598ВМ', 48, N'Романова Я.Г.')
+ (N'Toyota', N'Highlander', N'Р‘РµР»С‹Р№', 2016,  N'Рћ598Р’Рњ', 48, N'Р РѕРјР°РЅРѕРІР° РЇ.Р“.')
 INSERT INTO [KB301_Mustafina].Mustafina.cars VALUES 
- (N'Lexus', N'RC', N'Голубой', 2014,  N'А687ОР', 196, N'Шипулин А.В.')
+ (N'Lexus', N'RC', N'Р“РѕР»СѓР±РѕР№', 2014,  N'Рђ687РћР ', 196, N'РЁРёРїСѓР»РёРЅ Рђ.Р’.')
 INSERT INTO [KB301_Mustafina].Mustafina.cars VALUES 
- (N'Volkswagen', N'Golf Country', N'Золотой', 2016,  N'Т482ОК', 27, N'Зайцева О.А.')
+ (N'Volkswagen', N'Golf Country', N'Р—РѕР»РѕС‚РѕР№', 2016,  N'Рў482РћРљ', 27, N'Р—Р°Р№С†РµРІР° Рћ.Рђ.')
 INSERT INTO [KB301_Mustafina].Mustafina.cars VALUES 
- (N'Toyota', N'Camry', N'Чёрный', 2017,  N'С273МН', 123, N'Медведцева О.Р.')
+ (N'Toyota', N'Camry', N'Р§С‘СЂРЅС‹Р№', 2017,  N'РЎ273РњРќ', 123, N'РњРµРґРІРµРґС†РµРІР° Рћ.Р .')
 INSERT INTO [KB301_Mustafina].Mustafina.cars VALUES 
- (N'Skoda', N'Scala', N'Оранжевый', 2015,  N'Х448ЕО', 178, N'Чудов М.А.')
+ (N'Skoda', N'Scala', N'РћСЂР°РЅР¶РµРІС‹Р№', 2015,  N'РҐ448Р•Рћ', 178, N'Р§СѓРґРѕРІ Рњ.Рђ.')
 INSERT INTO [KB301_Mustafina].Mustafina.cars VALUES 
- (N'Lada', N'Granta', N'Красный', 2012,  N'А942ВУ', 62, N'Ахатова А.А.')
+ (N'Lada', N'Granta', N'РљСЂР°СЃРЅС‹Р№', 2012,  N'Рђ942Р’РЈ', 62, N'РђС…Р°С‚РѕРІР° Рђ.Рђ.')
 INSERT INTO [KB301_Mustafina].Mustafina.cars VALUES 
- (N'Porsche', N'Taycan', N'Бордовый', 2013,  N'Т767МС', 51, N'Белова Н.А.')
+ (N'Porsche', N'Taycan', N'Р‘РѕСЂРґРѕРІС‹Р№', 2013,  N'Рў767РњРЎ', 51, N'Р‘РµР»РѕРІР° Рќ.Рђ.')
 INSERT INTO [KB301_Mustafina].Mustafina.cars VALUES 
- (N'Lada', N'Xray Cross', N'Бирюзовый', 2011,  N'К219ОА', 74, N'Боярских М.В.')
+ (N'Lada', N'Xray Cross', N'Р‘РёСЂСЋР·РѕРІС‹Р№', 2011,  N'Рљ219РћРђ', 74, N'Р‘РѕСЏСЂСЃРєРёС… Рњ.Р’.')
 INSERT INTO [KB301_Mustafina].Mustafina.cars VALUES 
- (N'Suzuki', N'Fun', N'Белый', 2009,  N'О108РТ', 174, N'Вилухина О.Г.')
+ (N'Suzuki', N'Fun', N'Р‘РµР»С‹Р№', 2009,  N'Рћ108Р Рў', 174, N'Р’РёР»СѓС…РёРЅР° Рћ.Р“.')
 INSERT INTO [KB301_Mustafina].Mustafina.cars VALUES 
- (N'Infinity', N'Q60', N'Серебристый', 2011,  N'С634ТО', 55, N'Васильева М.С.')
+ (N'Infinity', N'Q60', N'РЎРµСЂРµР±СЂРёСЃС‚С‹Р№', 2011,  N'РЎ634РўРћ', 55, N'Р’Р°СЃРёР»СЊРµРІР° Рњ.РЎ.')
 INSERT INTO [KB301_Mustafina].Mustafina.cars VALUES 
- (N'Chery', N'J11', N'Бордовый', 2010,  N'С841ЕТ', 81, N'Виролайнен Д.Л.')
+ (N'Chery', N'J11', N'Р‘РѕСЂРґРѕРІС‹Р№', 2010,  N'РЎ841Р•Рў', 81, N'Р’РёСЂРѕР»Р°Р№РЅРµРЅ Р”.Р›.')
 INSERT INTO [KB301_Mustafina].Mustafina.cars VALUES 
- (N'Bentley', N'R-Type', N'Чёрный', 2018,  N'Н995ЕТ', 48, N'Глазырина Е.И.')
+ (N'Bentley', N'R-Type', N'Р§С‘СЂРЅС‹Р№', 2018,  N'Рќ995Р•Рў', 48, N'Р“Р»Р°Р·С‹СЂРёРЅР° Р•.Р.')
 INSERT INTO [KB301_Mustafina].Mustafina.cars VALUES 
- (N'КамАЗ', N'6520', N'Белый', 2015,  N'Р470УТ', 55, N'Дедюхин А.Р.')
+ (N'РљР°РјРђР—', N'6520', N'Р‘РµР»С‹Р№', 2015,  N'Р 470РЈРў', 55, N'Р”РµРґСЋС…РёРЅ Рђ.Р .')
 INSERT INTO [KB301_Mustafina].Mustafina.cars VALUES 
- (N'Lada', N'Vesta', N'Красный', 2019,  N'Т540УР', 48, N'Елисеев М.П.')
+ (N'Lada', N'Vesta', N'РљСЂР°СЃРЅС‹Р№', 2019,  N'Рў540РЈР ', 48, N'Р•Р»РёСЃРµРµРІ Рњ.Рџ.')
 INSERT INTO [KB301_Mustafina].Mustafina.cars VALUES 
- (N'Lada', N'2106', N'Зелёный', 2016,  N'М456ТС', 89, N'Загоруйко А.Г.')
+ (N'Lada', N'2106', N'Р—РµР»С‘РЅС‹Р№', 2016,  N'Рњ456РўРЎ', 89, N'Р—Р°РіРѕСЂСѓР№РєРѕ Рђ.Р“.')
 INSERT INTO [KB301_Mustafina].Mustafina.cars VALUES 
- (N'Lada', N'2107', N'Серебристый', 2007,  N'К666АХ', 32, N'Ильченко К.С.')
+ (N'Lada', N'2107', N'РЎРµСЂРµР±СЂРёСЃС‚С‹Р№', 2007,  N'Рљ666РђРҐ', 32, N'РР»СЊС‡РµРЅРєРѕ Рљ.РЎ.')
 INSERT INTO [KB301_Mustafina].Mustafina.cars VALUES  
- (N'Toyota', N'Highlander', N'Белый', 2015,  N'Е810ЕТ', 74, N'Майгуров В.В.')
+ (N'Toyota', N'Highlander', N'Р‘РµР»С‹Р№', 2015,  N'Р•810Р•Рў', 74, N'РњР°Р№РіСѓСЂРѕРІ Р’.Р’.')
 INSERT INTO [KB301_Mustafina].Mustafina.cars VALUES  
- (N'КамАЗ', N'65115', N'Синий', 2013,  N'М349ОН', 66, N'Меркушина А.О.')
+ (N'РљР°РјРђР—', N'65115', N'РЎРёРЅРёР№', 2013,  N'Рњ349РћРќ', 66, N'РњРµСЂРєСѓС€РёРЅР° Рђ.Рћ.')
 GO
 /*
 INSERT INTO [KB301_Mustafina].Mustafina.cars VALUES  
- (N'Suzuki', N'Liana', N'Зелёный', 2013,  N'Ш609ТС', 51, N'Морозова А.И.')
+ (N'Suzuki', N'Liana', N'Р—РµР»С‘РЅС‹Р№', 2013,  N'РЁ609РўРЎ', 51, N'РњРѕСЂРѕР·РѕРІР° Рђ.Р.')
 INSERT INTO [KB301_Mustafina].Mustafina.cars VALUES  
- (N'Suzuki', N'Liana', N'Жёлтый', 2008,  N'Н999ТЗ', 51, N'Морозова А.И.')
+ (N'Suzuki', N'Liana', N'Р–С‘Р»С‚С‹Р№', 2008,  N'Рќ999РўР—', 51, N'РњРѕСЂРѕР·РѕРІР° Рђ.Р.')
 INSERT INTO [KB301_Mustafina].Mustafina.cars VALUES  
- (N'Suzuki', N'Liana', N'Зелёный', 2007,  N'4609ТС', 51, N'Морозова А.И.')
+ (N'Suzuki', N'Liana', N'Р—РµР»С‘РЅС‹Р№', 2007,  N'4609РўРЎ', 51, N'РњРѕСЂРѕР·РѕРІР° Рђ.Р.')
 INSERT INTO [KB301_Mustafina].Mustafina.cars VALUES 
- (N'Skoda', N'Scala', N'Белый', 2017,  N'Н000ТВ', 74, N'Логинов А.С.')
+ (N'Skoda', N'Scala', N'Р‘РµР»С‹Р№', 2017,  N'Рќ000РўР’', 74, N'Р›РѕРіРёРЅРѕРІ Рђ.РЎ.')
 */
 
 INSERT INTO [KB301_Mustafina].Mustafina.posts
@@ -536,10 +536,10 @@ INSERT INTO [KB301_Mustafina].Mustafina.posts
  ,(196)
  ,(196)
 GO
---1, 2, 24 - транзитные машины
---6, 13, 15 - местные машины
---5, 10, 18, 31 - иногородние машины
---7, 8, 9, 20, 21, 14 - прочие
+--1, 2, 24 - С‚СЂР°РЅР·РёС‚РЅС‹Рµ РјР°С€РёРЅС‹
+--6, 13, 15 - РјРµСЃС‚РЅС‹Рµ РјР°С€РёРЅС‹
+--5, 10, 18, 31 - РёРЅРѕРіРѕСЂРѕРґРЅРёРµ РјР°С€РёРЅС‹
+--7, 8, 9, 20, 21, 14 - РїСЂРѕС‡РёРµ
 
 INSERT INTO [KB301_Mustafina].Mustafina.passages
  (ID_post, ID_car, Passage_time, Entry_or_exit)
@@ -620,20 +620,20 @@ SELECT *
 FROM [KB301_Mustafina].Mustafina.passages
 
 
---Код региона поста - название региона
+--РљРѕРґ СЂРµРіРёРѕРЅР° РїРѕСЃС‚Р° - РЅР°Р·РІР°РЅРёРµ СЂРµРіРёРѕРЅР°
 
-SELECT POST.ID_post as 'Номер поста', 
-IIF(LEN(CAST(Region as int))=1, '0' + CAST(Region as nvarchar(5)), CAST(Region as nvarchar(5))) as 'Код региона поста',
-IIF(LEN(CAST(REGION.ID_region as int))=1, '0' + CAST(REGION.ID_region as nvarchar(5)), CAST(REGION.ID_region as nvarchar(5))) as 'Главный код региона',
-REGION.Name_of_region as 'Регион поста' FROM 
+SELECT POST.ID_post as 'РќРѕРјРµСЂ РїРѕСЃС‚Р°', 
+IIF(LEN(CAST(Region as int))=1, '0' + CAST(Region as nvarchar(5)), CAST(Region as nvarchar(5))) as 'РљРѕРґ СЂРµРіРёРѕРЅР° РїРѕСЃС‚Р°',
+IIF(LEN(CAST(REGION.ID_region as int))=1, '0' + CAST(REGION.ID_region as nvarchar(5)), CAST(REGION.ID_region as nvarchar(5))) as 'Р“Р»Р°РІРЅС‹Р№ РєРѕРґ СЂРµРіРёРѕРЅР°',
+REGION.Name_of_region as 'Р РµРіРёРѕРЅ РїРѕСЃС‚Р°' FROM 
 [KB301_Mustafina].Mustafina.posts as POST INNER JOIN 
 [KB301_Mustafina].Mustafina.region_codes as CODE ON POST.Region = CODE.Code INNER JOIN 
 [KB301_Mustafina].Mustafina.regions as REGION ON CODE.ID_region = REGION.ID_region
 
---Количество автомобилей, выехавшие из города и сгруппированные по регионам
+--РљРѕР»РёС‡РµСЃС‚РІРѕ Р°РІС‚РѕРјРѕР±РёР»РµР№, РІС‹РµС…Р°РІС€РёРµ РёР· РіРѕСЂРѕРґР° Рё СЃРіСЂСѓРїРїРёСЂРѕРІР°РЅРЅС‹Рµ РїРѕ СЂРµРіРёРѕРЅР°Рј
 
-SELECT  REGION_CAR.ID_region as 'Код региона',
-REGION_CAR.Name_of_region as 'Регион',  COUNT(REGION_CAR.Name_of_region) as 'Количество автомобилей'
+SELECT  REGION_CAR.ID_region as 'РљРѕРґ СЂРµРіРёРѕРЅР°',
+REGION_CAR.Name_of_region as 'Р РµРіРёРѕРЅ',  COUNT(REGION_CAR.Name_of_region) as 'РљРѕР»РёС‡РµСЃС‚РІРѕ Р°РІС‚РѕРјРѕР±РёР»РµР№'
 FROM [KB301_Mustafina].Mustafina.passages AS PASS LEFT JOIN
 [KB301_Mustafina].Mustafina.cars as CAR ON PASS.ID_car = CAR.ID_car INNER JOIN
 [KB301_Mustafina].Mustafina.region_codes as CODE_CAR ON CAR.Region_code = CODE_CAR.Code INNER JOIN 
@@ -641,15 +641,15 @@ FROM [KB301_Mustafina].Mustafina.passages AS PASS LEFT JOIN
 WHERE PASS.Entry_or_exit=0
 GROUP BY REGION_CAR.Name_of_region, REGION_CAR.ID_region
 
---Вывод таблицы движения со всеми отформатированными данными
+--Р’С‹РІРѕРґ С‚Р°Р±Р»РёС†С‹ РґРІРёР¶РµРЅРёСЏ СЃРѕ РІСЃРµРјРё РѕС‚С„РѕСЂРјР°С‚РёСЂРѕРІР°РЅРЅС‹РјРё РґР°РЅРЅС‹РјРё
 
-SELECT CAR.Make as 'Производитель', CAR.Model as 'Марка', CAR.Color as 'Цвет', CAR.Year_of_issue as 'Год производства', CAR.Driver_name as 'Водитель', 
-CAR.State_number + IIF(LEN(CAST(CAR.Region_code as int))=1, '0' + CAST(CAR.Region_code as nvarchar(5)), CAST(CAR.Region_code as nvarchar(5))) as 'Гос.номер',  
-REGION_CAR.Name_of_region AS 'Регион автомобиля',
-IIF(PASS.Entry_or_exit=1, 'Въезд', 'Выезд') as 'Въезд/Выезд', POST.ID_post as 'Пост въезда/выезда', 
-IIF(LEN(CAST(POST.Region as int))=1, '0' + CAST(POST.Region as nvarchar(5)), CAST(CODE.ID_region as nvarchar(5))) as 'Код региона поста',
-REGION.Name_of_region as 'Регион въезда/выезда',
-FORMAT(CAST(PASS.Passage_time as time), N'hh\:mm') as 'Время въезда/выезда' 
+SELECT CAR.Make as 'РџСЂРѕРёР·РІРѕРґРёС‚РµР»СЊ', CAR.Model as 'РњР°СЂРєР°', CAR.Color as 'Р¦РІРµС‚', CAR.Year_of_issue as 'Р“РѕРґ РїСЂРѕРёР·РІРѕРґСЃС‚РІР°', CAR.Driver_name as 'Р’РѕРґРёС‚РµР»СЊ', 
+CAR.State_number + IIF(LEN(CAST(CAR.Region_code as int))=1, '0' + CAST(CAR.Region_code as nvarchar(5)), CAST(CAR.Region_code as nvarchar(5))) as 'Р“РѕСЃ.РЅРѕРјРµСЂ',  
+REGION_CAR.Name_of_region AS 'Р РµРіРёРѕРЅ Р°РІС‚РѕРјРѕР±РёР»СЏ',
+IIF(PASS.Entry_or_exit=1, 'Р’СЉРµР·Рґ', 'Р’С‹РµР·Рґ') as 'Р’СЉРµР·Рґ/Р’С‹РµР·Рґ', POST.ID_post as 'РџРѕСЃС‚ РІСЉРµР·РґР°/РІС‹РµР·РґР°', 
+IIF(LEN(CAST(POST.Region as int))=1, '0' + CAST(POST.Region as nvarchar(5)), CAST(CODE.ID_region as nvarchar(5))) as 'РљРѕРґ СЂРµРіРёРѕРЅР° РїРѕСЃС‚Р°',
+REGION.Name_of_region as 'Р РµРіРёРѕРЅ РІСЉРµР·РґР°/РІС‹РµР·РґР°',
+FORMAT(CAST(PASS.Passage_time as time), N'hh\:mm') as 'Р’СЂРµРјСЏ РІСЉРµР·РґР°/РІС‹РµР·РґР°' 
 FROM
 [KB301_Mustafina].Mustafina.passages AS PASS LEFT JOIN
 [KB301_Mustafina].Mustafina.cars as CAR ON PASS.ID_car = CAR.ID_car INNER JOIN
@@ -661,18 +661,18 @@ FROM
 [KB301_Mustafina].Mustafina.regions as REGION ON CODE.ID_region = REGION.ID_region 
 ORDER BY PASS.Passage_time, POST.ID_post
 
---Транзитные автомобили
+--РўСЂР°РЅР·РёС‚РЅС‹Рµ Р°РІС‚РѕРјРѕР±РёР»Рё
 
 CREATE VIEW transit_cars AS
 
-SELECT CAR.Make as 'Производитель', CAR.Model as 'Марка', CAR.Color as 'Цвет', CAR.Year_of_issue as 'Год производства',
-CAR.Driver_name as 'Водитель', 
-CAR.State_number + IIF(LEN(CAST(CAR.Region_code as int))=1, '0' + CAST(CAR.Region_code as nvarchar(5)), CAST(CAR.Region_code as nvarchar(5))) as 'Гос.номер', 
-REGION_CAR.Name_of_region as 'Регион автомобиля', POST_IN.ID_post as 'Пост въезда', 
-POST_OUT.ID_post as 'Пост выезда', 
-IIF(LEN(CAST(POST_OUT.Region as int))=1, '0' + CAST(POST_OUT.Region as nvarchar(5)), CAST(REGION_OUT.ID_region as nvarchar(5))) as 'Код региона постов', 
-REGION_OUT.Name_of_region as 'Регион въезда-выезда',
-FORMAT(CAST(IN_CITY.Passage_time as time), N'hh\:mm') + ' - ' + FORMAT(cast(OUT_CITY.Passage_time as time), N'hh\:mm') as 'Время въезда-выезда'
+SELECT CAR.Make as 'РџСЂРѕРёР·РІРѕРґРёС‚РµР»СЊ', CAR.Model as 'РњР°СЂРєР°', CAR.Color as 'Р¦РІРµС‚', CAR.Year_of_issue as 'Р“РѕРґ РїСЂРѕРёР·РІРѕРґСЃС‚РІР°',
+CAR.Driver_name as 'Р’РѕРґРёС‚РµР»СЊ', 
+CAR.State_number + IIF(LEN(CAST(CAR.Region_code as int))=1, '0' + CAST(CAR.Region_code as nvarchar(5)), CAST(CAR.Region_code as nvarchar(5))) as 'Р“РѕСЃ.РЅРѕРјРµСЂ', 
+REGION_CAR.Name_of_region as 'Р РµРіРёРѕРЅ Р°РІС‚РѕРјРѕР±РёР»СЏ', POST_IN.ID_post as 'РџРѕСЃС‚ РІСЉРµР·РґР°', 
+POST_OUT.ID_post as 'РџРѕСЃС‚ РІС‹РµР·РґР°', 
+IIF(LEN(CAST(POST_OUT.Region as int))=1, '0' + CAST(POST_OUT.Region as nvarchar(5)), CAST(REGION_OUT.ID_region as nvarchar(5))) as 'РљРѕРґ СЂРµРіРёРѕРЅР° РїРѕСЃС‚РѕРІ', 
+REGION_OUT.Name_of_region as 'Р РµРіРёРѕРЅ РІСЉРµР·РґР°-РІС‹РµР·РґР°',
+FORMAT(CAST(IN_CITY.Passage_time as time), N'hh\:mm') + ' - ' + FORMAT(cast(OUT_CITY.Passage_time as time), N'hh\:mm') as 'Р’СЂРµРјСЏ РІСЉРµР·РґР°-РІС‹РµР·РґР°'
 FROM 
 [KB301_Mustafina].Mustafina.passages as IN_CITY FULL JOIN
 [KB301_Mustafina].Mustafina.passages as OUT_CITY ON IN_CITY.ID_car = OUT_CITY.ID_car INNER JOIN
@@ -699,18 +699,18 @@ GO
 
 SELECT * FROM dbo.transit_cars
 
---Иногородние автомобили
+--РРЅРѕРіРѕСЂРѕРґРЅРёРµ Р°РІС‚РѕРјРѕР±РёР»Рё
 
 CREATE VIEW nonresident_cars AS
 
-SELECT CAR.Make as 'Производитель', CAR.Model as 'Марка', CAR.Color as 'Цвет', CAR.Year_of_issue as 'Год производства', 
-CAR.Driver_name as 'Водитель', 
-CAR.State_number + IIF(LEN(CAST(CAR.Region_code as int))=1, '0' + CAST(CAR.Region_code as nvarchar(5)), CAST(CAR.Region_code as nvarchar(5))) as 'Гос.номер', 
-REGION_CAR.Name_of_region as 'Регион автомобиля', POST_IN.ID_post as 'Пост въезда', 
-POST_OUT.ID_post as 'Пост выезда', 
-IIF(LEN(CAST(POST_OUT.Region as int))=1, '0' + CAST(POST_OUT.Region as nvarchar(5)), CAST(REGION_OUT.ID_region as nvarchar(5))) as 'Код региона постов',
-REGION_OUT.Name_of_region as 'Регион въезда-выезда',
-FORMAT(CAST(IN_CITY.Passage_time as time), N'hh\:mm') + ' - ' + FORMAT(cast(OUT_CITY.Passage_time as time), N'hh\:mm') as 'Время въезда-выезда'
+SELECT CAR.Make as 'РџСЂРѕРёР·РІРѕРґРёС‚РµР»СЊ', CAR.Model as 'РњР°СЂРєР°', CAR.Color as 'Р¦РІРµС‚', CAR.Year_of_issue as 'Р“РѕРґ РїСЂРѕРёР·РІРѕРґСЃС‚РІР°', 
+CAR.Driver_name as 'Р’РѕРґРёС‚РµР»СЊ', 
+CAR.State_number + IIF(LEN(CAST(CAR.Region_code as int))=1, '0' + CAST(CAR.Region_code as nvarchar(5)), CAST(CAR.Region_code as nvarchar(5))) as 'Р“РѕСЃ.РЅРѕРјРµСЂ', 
+REGION_CAR.Name_of_region as 'Р РµРіРёРѕРЅ Р°РІС‚РѕРјРѕР±РёР»СЏ', POST_IN.ID_post as 'РџРѕСЃС‚ РІСЉРµР·РґР°', 
+POST_OUT.ID_post as 'РџРѕСЃС‚ РІС‹РµР·РґР°', 
+IIF(LEN(CAST(POST_OUT.Region as int))=1, '0' + CAST(POST_OUT.Region as nvarchar(5)), CAST(REGION_OUT.ID_region as nvarchar(5))) as 'РљРѕРґ СЂРµРіРёРѕРЅР° РїРѕСЃС‚РѕРІ',
+REGION_OUT.Name_of_region as 'Р РµРіРёРѕРЅ РІСЉРµР·РґР°-РІС‹РµР·РґР°',
+FORMAT(CAST(IN_CITY.Passage_time as time), N'hh\:mm') + ' - ' + FORMAT(cast(OUT_CITY.Passage_time as time), N'hh\:mm') as 'Р’СЂРµРјСЏ РІСЉРµР·РґР°-РІС‹РµР·РґР°'
 FROM 
 [KB301_Mustafina].Mustafina.passages as IN_CITY FULL JOIN
 [KB301_Mustafina].Mustafina.passages as OUT_CITY ON IN_CITY.ID_car = OUT_CITY.ID_car INNER JOIN
@@ -736,17 +736,17 @@ GO
 
 SELECT * FROM dbo.nonresident_cars
 
---Местные автомобили
+--РњРµСЃС‚РЅС‹Рµ Р°РІС‚РѕРјРѕР±РёР»Рё
 
 CREATE VIEW local_cars AS
 
-SELECT CAR.Make as 'Производитель', CAR.Model as 'Марка', CAR.Color as 'Цвет', CAR.Year_of_issue as 'Год производства', 
-CAR.Driver_name as 'Водитель',
-CAR.State_number + IIF(LEN(CAST(CAR.Region_code as int))=1, '0' + CAST(CAR.Region_code as nvarchar(5)), CAST(CAR.Region_code as nvarchar(5))) as 'Гос.номер',  
-REGION_CAR.Name_of_region as 'Регион автомобиля', POST_OUT.ID_post as 'Пост выезда', POST_IN.ID_post as 'Пост въезда', 
-IIF(LEN(CAST(POST_OUT.Region as int))=1, '0' + CAST(POST_OUT.Region as nvarchar(5)), CAST(REGION_OUT.ID_region as nvarchar(5))) as 'Код региона постов',
-REGION_OUT.Name_of_region as 'Регион въезда-выезда',
-FORMAT(CAST(OUT_CITY.Passage_time as time), N'hh\:mm') + ' - ' + FORMAT(cast(IN_CITY.Passage_time as time), N'hh\:mm') as 'Время выезда-въезда'
+SELECT CAR.Make as 'РџСЂРѕРёР·РІРѕРґРёС‚РµР»СЊ', CAR.Model as 'РњР°СЂРєР°', CAR.Color as 'Р¦РІРµС‚', CAR.Year_of_issue as 'Р“РѕРґ РїСЂРѕРёР·РІРѕРґСЃС‚РІР°', 
+CAR.Driver_name as 'Р’РѕРґРёС‚РµР»СЊ',
+CAR.State_number + IIF(LEN(CAST(CAR.Region_code as int))=1, '0' + CAST(CAR.Region_code as nvarchar(5)), CAST(CAR.Region_code as nvarchar(5))) as 'Р“РѕСЃ.РЅРѕРјРµСЂ',  
+REGION_CAR.Name_of_region as 'Р РµРіРёРѕРЅ Р°РІС‚РѕРјРѕР±РёР»СЏ', POST_OUT.ID_post as 'РџРѕСЃС‚ РІС‹РµР·РґР°', POST_IN.ID_post as 'РџРѕСЃС‚ РІСЉРµР·РґР°', 
+IIF(LEN(CAST(POST_OUT.Region as int))=1, '0' + CAST(POST_OUT.Region as nvarchar(5)), CAST(REGION_OUT.ID_region as nvarchar(5))) as 'РљРѕРґ СЂРµРіРёРѕРЅР° РїРѕСЃС‚РѕРІ',
+REGION_OUT.Name_of_region as 'Р РµРіРёРѕРЅ РІСЉРµР·РґР°-РІС‹РµР·РґР°',
+FORMAT(CAST(OUT_CITY.Passage_time as time), N'hh\:mm') + ' - ' + FORMAT(cast(IN_CITY.Passage_time as time), N'hh\:mm') as 'Р’СЂРµРјСЏ РІС‹РµР·РґР°-РІСЉРµР·РґР°'
 FROM 
 [KB301_Mustafina].Mustafina.passages as IN_CITY FULL JOIN
 [KB301_Mustafina].Mustafina.passages as OUT_CITY ON IN_CITY.ID_car = OUT_CITY.ID_car INNER JOIN
@@ -773,25 +773,25 @@ GO
 SELECT * FROM dbo.local_cars
 
 
---Прочие автомобили
+--РџСЂРѕС‡РёРµ Р°РІС‚РѕРјРѕР±РёР»Рё
 
 CREATE VIEW other_cars AS
 
-SELECT CAR.Make as 'Производитель', CAR.Model as 'Марка', CAR.Color as 'Цвет', CAR.Year_of_issue as 'Год производства', CAR.Driver_name as 'Водитель', 
-CAR.State_number + IIF(LEN(CAST(CAR.Region_code as int))=1, '0' + CAST(CAR.Region_code as nvarchar(5)), CAST(CAR.Region_code as nvarchar(5))) as 'Гос.номер',  
-REGION_CAR.Name_of_region as 'Регион автомобиля', 
-IIF(PASS.Entry_or_exit=1, 'Въезд', 'Выезд') as 'Въезд/Выезд', POST.ID_post as 'Пост въезда/выезда', 
-IIF(LEN(CAST(POST.Region as int))=1, '0' + CAST(POST.Region as nvarchar(5)), CAST(REGION.ID_region  as nvarchar(5))) as 'Код региона поста',
-REGION.Name_of_region as 'Регион въезда/выезда',
-FORMAT(CAST(PASS.Passage_time as time), N'hh\:mm') as 'Время въезда/выезда' 
+SELECT CAR.Make as 'РџСЂРѕРёР·РІРѕРґРёС‚РµР»СЊ', CAR.Model as 'РњР°СЂРєР°', CAR.Color as 'Р¦РІРµС‚', CAR.Year_of_issue as 'Р“РѕРґ РїСЂРѕРёР·РІРѕРґСЃС‚РІР°', CAR.Driver_name as 'Р’РѕРґРёС‚РµР»СЊ', 
+CAR.State_number + IIF(LEN(CAST(CAR.Region_code as int))=1, '0' + CAST(CAR.Region_code as nvarchar(5)), CAST(CAR.Region_code as nvarchar(5))) as 'Р“РѕСЃ.РЅРѕРјРµСЂ',  
+REGION_CAR.Name_of_region as 'Р РµРіРёРѕРЅ Р°РІС‚РѕРјРѕР±РёР»СЏ', 
+IIF(PASS.Entry_or_exit=1, 'Р’СЉРµР·Рґ', 'Р’С‹РµР·Рґ') as 'Р’СЉРµР·Рґ/Р’С‹РµР·Рґ', POST.ID_post as 'РџРѕСЃС‚ РІСЉРµР·РґР°/РІС‹РµР·РґР°', 
+IIF(LEN(CAST(POST.Region as int))=1, '0' + CAST(POST.Region as nvarchar(5)), CAST(REGION.ID_region  as nvarchar(5))) as 'РљРѕРґ СЂРµРіРёРѕРЅР° РїРѕСЃС‚Р°',
+REGION.Name_of_region as 'Р РµРіРёРѕРЅ РІСЉРµР·РґР°/РІС‹РµР·РґР°',
+FORMAT(CAST(PASS.Passage_time as time), N'hh\:mm') as 'Р’СЂРµРјСЏ РІСЉРµР·РґР°/РІС‹РµР·РґР°' 
 
 FROM [KB301_Mustafina].Mustafina.passages AS PASS LEFT JOIN
-dbo.local_cars AS LOC ON PASS.ID_post = LOC.[Пост выезда] AND PASS.Passage_time = SUBSTRING(LOC.[Время выезда-въезда], 1, 5) 
-OR PASS.ID_post = LOC.[Пост въезда]  AND PASS.Passage_time = SUBSTRING(LOC.[Время выезда-въезда], 9, 5) LEFT JOIN
-dbo.nonresident_cars AS NON ON PASS.ID_post = NON.[Пост въезда] AND PASS.Passage_time = SUBSTRING(NON.[Время въезда-выезда], 1, 5) 
-OR PASS.ID_post = NON.[Пост выезда]  AND PASS.Passage_time = SUBSTRING(NON.[Время въезда-выезда], 9, 5) LEFT JOIN
-dbo.transit_cars AS TR ON PASS.ID_post = TR.[Пост въезда] AND PASS.Passage_time = SUBSTRING(TR.[Время въезда-выезда], 1, 5) 
-OR PASS.ID_post = TR.[Пост выезда]  AND PASS.Passage_time = SUBSTRING(TR.[Время въезда-выезда], 9, 5) INNER JOIN
+dbo.local_cars AS LOC ON PASS.ID_post = LOC.[РџРѕСЃС‚ РІС‹РµР·РґР°] AND PASS.Passage_time = SUBSTRING(LOC.[Р’СЂРµРјСЏ РІС‹РµР·РґР°-РІСЉРµР·РґР°], 1, 5) 
+OR PASS.ID_post = LOC.[РџРѕСЃС‚ РІСЉРµР·РґР°]  AND PASS.Passage_time = SUBSTRING(LOC.[Р’СЂРµРјСЏ РІС‹РµР·РґР°-РІСЉРµР·РґР°], 9, 5) LEFT JOIN
+dbo.nonresident_cars AS NON ON PASS.ID_post = NON.[РџРѕСЃС‚ РІСЉРµР·РґР°] AND PASS.Passage_time = SUBSTRING(NON.[Р’СЂРµРјСЏ РІСЉРµР·РґР°-РІС‹РµР·РґР°], 1, 5) 
+OR PASS.ID_post = NON.[РџРѕСЃС‚ РІС‹РµР·РґР°]  AND PASS.Passage_time = SUBSTRING(NON.[Р’СЂРµРјСЏ РІСЉРµР·РґР°-РІС‹РµР·РґР°], 9, 5) LEFT JOIN
+dbo.transit_cars AS TR ON PASS.ID_post = TR.[РџРѕСЃС‚ РІСЉРµР·РґР°] AND PASS.Passage_time = SUBSTRING(TR.[Р’СЂРµРјСЏ РІСЉРµР·РґР°-РІС‹РµР·РґР°], 1, 5) 
+OR PASS.ID_post = TR.[РџРѕСЃС‚ РІС‹РµР·РґР°]  AND PASS.Passage_time = SUBSTRING(TR.[Р’СЂРµРјСЏ РІСЉРµР·РґР°-РІС‹РµР·РґР°], 9, 5) INNER JOIN
 
 [KB301_Mustafina].Mustafina.cars as CAR ON PASS.ID_car = CAR.ID_car INNER JOIN
 [KB301_Mustafina].Mustafina.region_codes as CODE_CAR ON CAR.Region_code = CODE_CAR.Code INNER JOIN 
@@ -800,7 +800,7 @@ OR PASS.ID_post = TR.[Пост выезда]  AND PASS.Passage_time = SUBSTRING(TR.[Время 
 [KB301_Mustafina].Mustafina.posts as POST ON PASS.ID_post = POST.ID_post INNER JOIN 
 [KB301_Mustafina].Mustafina.region_codes as CODE ON POST.Region = CODE.Code INNER JOIN 
 [KB301_Mustafina].Mustafina.regions as REGION ON CODE.ID_region = REGION.ID_region 
-WHERE LOC.[Гос.номер] IS NULL AND NON.[Гос.номер] IS NULL AND TR.[Гос.номер] IS NULL
+WHERE LOC.[Р“РѕСЃ.РЅРѕРјРµСЂ] IS NULL AND NON.[Р“РѕСЃ.РЅРѕРјРµСЂ] IS NULL AND TR.[Р“РѕСЃ.РЅРѕРјРµСЂ] IS NULL
 GO
 
 SELECT * FROM dbo.other_cars

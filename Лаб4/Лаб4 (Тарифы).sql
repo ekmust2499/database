@@ -27,7 +27,7 @@ CREATE SCHEMA Mustafina
 GO
 
 /*
-Создание таблиц и определение первичных ключей
+РЎРѕР·РґР°РЅРёРµ С‚Р°Р±Р»РёС† Рё РѕРїСЂРµРґРµР»РµРЅРёРµ РїРµСЂРІРёС‡РЅС‹С… РєР»СЋС‡РµР№
 */
 
 IF OBJECT_ID(N'tariff', 'U') IS NOT NULL
@@ -46,13 +46,13 @@ GO
 
 
 INSERT INTO [KB301_Mustafina].Mustafina.tariff VALUES
-(N'Без абонентской платы', 0, 0, 2),
-(N'Безлимитный', 600, 43200, 0),
-(N'Смешанный', 200, 14400, 1)
+(N'Р‘РµР· Р°Р±РѕРЅРµРЅС‚СЃРєРѕР№ РїР»Р°С‚С‹', 0, 0, 2),
+(N'Р‘РµР·Р»РёРјРёС‚РЅС‹Р№', 600, 43200, 0),
+(N'РЎРјРµС€Р°РЅРЅС‹Р№', 200, 14400, 1)
 GO
 
 
---Функция определяет наиболее выгодный тариф по заданному количеству минут
+--Р¤СѓРЅРєС†РёСЏ РѕРїСЂРµРґРµР»СЏРµС‚ РЅР°РёР±РѕР»РµРµ РІС‹РіРѕРґРЅС‹Р№ С‚Р°СЂРёС„ РїРѕ Р·Р°РґР°РЅРЅРѕРјСѓ РєРѕР»РёС‡РµСЃС‚РІСѓ РјРёРЅСѓС‚
 CREATE FUNCTION determine_best_tariff(@minutes_IN float)
 RETURNS nvarchar(70)
 AS
@@ -70,13 +70,13 @@ DECLARE @cursor CURSOR
 		BEGIN
 			IF @minutes_IN < 0
 			BEGIN
-				RETURN N'Введено отрицательное количество минут!'
+				RETURN N'Р’РІРµРґРµРЅРѕ РѕС‚СЂРёС†Р°С‚РµР»СЊРЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ РјРёРЅСѓС‚!'
 			END
 			IF @minutes_IN > 43200
 			BEGIN
-				RETURN N'Входное количество минут превышает количества минут в месяце!'
+				RETURN N'Р’С…РѕРґРЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ РјРёРЅСѓС‚ РїСЂРµРІС‹С€Р°РµС‚ РєРѕР»РёС‡РµСЃС‚РІР° РјРёРЅСѓС‚ РІ РјРµСЃСЏС†Рµ!'
 			END
-			--Количество минут вмещаются в количество минут абонентской платы
+			--РљРѕР»РёС‡РµСЃС‚РІРѕ РјРёРЅСѓС‚ РІРјРµС‰Р°СЋС‚СЃСЏ РІ РєРѕР»РёС‡РµСЃС‚РІРѕ РјРёРЅСѓС‚ Р°Р±РѕРЅРµРЅС‚СЃРєРѕР№ РїР»Р°С‚С‹
 			IF @minutes_IN <= @minutes 
 			BEGIN
 				SET @current = @fee		
@@ -121,12 +121,12 @@ BEGIN
 	,(43200)
 	INSERT INTO #table SELECT MAX(Number_of_minutes) FROM [KB301_Mustafina].Mustafina.tariff
 	SET @max = 43200
-	--пересечение безлимита с без абонентской платы
+	--РїРµСЂРµСЃРµС‡РµРЅРёРµ Р±РµР·Р»РёРјРёС‚Р° СЃ Р±РµР· Р°Р±РѕРЅРµРЅС‚СЃРєРѕР№ РїР»Р°С‚С‹
 	INSERT INTO #table 
 				SELECT (A.Subscription_fee-B.Subscription_fee)/B.Cost_per_minute
 				FROM [KB301_Mustafina].Mustafina.tariff as A, [KB301_Mustafina].Mustafina.tariff as B
 				WHERE A.ID_tariff<>B.ID_tariff AND B.Cost_per_minute <> 0 AND (A.Subscription_fee-B.Subscription_fee)/B.Cost_per_minute > 0
-	--пересечение смешанного с остальными
+	--РїРµСЂРµСЃРµС‡РµРЅРёРµ СЃРјРµС€Р°РЅРЅРѕРіРѕ СЃ РѕСЃС‚Р°Р»СЊРЅС‹РјРё
 	INSERT INTO #table 
 				SELECT (A.Subscription_fee-B.Subscription_fee)/B.Cost_per_minute + B.Number_of_minutes
 				FROM [KB301_Mustafina].Mustafina.tariff as A, [KB301_Mustafina].Mustafina.tariff as B
@@ -155,8 +155,8 @@ BEGIN
 		SET @left=@right
 		FETCH NEXT FROM @cursor INTO @right
 	END
-	SELECT CONCAT('[ ', left_point, ' ; ', right_point, ' ]') as Отрезок,		   
-		   tariff as [Тариф]
+	SELECT CONCAT('[ ', left_point, ' ; ', right_point, ' ]') as РћС‚СЂРµР·РѕРє,		   
+		   tariff as [РўР°СЂРёС„]
 		   FROM #result 
 END
 GO
